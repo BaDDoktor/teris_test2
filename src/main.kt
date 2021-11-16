@@ -1,6 +1,3 @@
-import java.util.*
-import kotlin.random.Random
-
 fun main (){
     var map = Array(20,{Array(10,{"."}) })
     var xPosition = 0
@@ -21,7 +18,7 @@ fun main (){
 
 
 fun collision (){
-
+    print("asdasd")
 }
 
 fun update(map_new : Array<Array<String>>, block : Array<Array<String>>, xPos : Int,yPos : Int){
