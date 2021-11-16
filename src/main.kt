@@ -1,3 +1,4 @@
+import java.util.*
 import kotlin.random.Random
 
 fun main (){
@@ -5,14 +6,28 @@ fun main (){
     //var figura = Array(4,{Array(4,{"."}) })
     var xPosition = 0
     var yPosition = 3
-    var obiekt = Block_L(xPosition,yPosition)
+    var obiekt = Block_L()
 
     //create_fig(figura)
-    update(map,obiekt.figura,xPosition,yPosition)
+    //update(map,obiekt.block_ui,xPosition,yPosition)
 
+
+    while(true){
+        update(map,obiekt.block_ui,xPosition,yPosition)
+        println("Введите команду: Space, Down, Left, Right, Stop")
+        var input = readLine().toString().uppercase()
+        if (input == "SPACE") obiekt.reverse()
+        else if (input == "DOWN") xPosition+=1
+        else if (input == "LEFT") yPosition-=1
+        else if (input == "RIGHT") yPosition+=1
+        else if (input == "STOP") break
+    }
 }
 
 fun update(map_new : Array<Array<String>>, block : Array<Array<String>>, xPos : Int,yPos : Int){
+    for (x in map_new.indices){
+        for(i in map_new[x].indices) map_new[x][i] = "."
+    }
     for (x in block.indices){
         for(i in block[x].indices){
             if (block[x][i] != ".") map_new[xPos+x][yPos+i] = block[x][i]
@@ -23,6 +38,8 @@ fun update(map_new : Array<Array<String>>, block : Array<Array<String>>, xPos : 
         println()
     }
 }
+
+
 
 
 fun create_fig (fig : Array<Array<String>>) : Array<Array<String>>{
