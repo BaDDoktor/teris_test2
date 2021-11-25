@@ -1,29 +1,61 @@
-fun main (){
-    var map = Array(20,{Array(10,{"."}) })
-    var xPosition = 0
-    var yPosition = 3
-    var obiekt = Block_L()
+var mapWithFigura = Array(20,{Array(10,{"."}) })
+var mapJunk = Array(20,{Array(10,{"."}) })
+var xPosition = 0
+var yPosition = 3
+var obj = Block_L()
 
+fun main (){
     while(true){
-        update(map,obiekt.block_ui,xPosition,yPosition)
-        println("Введите команду: Space, Down, Left, Right, Stop")
-        var input = readLine().toString().uppercase()
-        if (input == "SPACE") obiekt.reverse()
-        else if (input == "DOWN") xPosition+=1
-        else if (input == "LEFT") yPosition-=1
-        else if (input == "RIGHT") yPosition+=1
-        else if (input == "STOP") break
+        update(mapWithFigura,mapJunk,obj.blockUI,xPosition,yPosition)
+        if (collision(mapJunk,obj.blockUI,xPosition,yPosition)) {
+            println("Введите команду: Space, Down, Left, Right, Stop")
+            when (readLine().toString().uppercase()) {
+                "SPACE", " " -> obj.reverse()
+                "DOWN", "D" -> xPosition += 1
+                "LEFT", "L" ->  yPosition -= 1
+                "RIGHT", "R" -> yPosition += 1
+                "STOP", "S" -> break
+            }
+        }
+        else new_age(mapJunk,obj.blockUI,xPosition,yPosition)
     }
 }
 
 
-fun collision (){
-    print("asdasd")
+fun move (){
+
 }
 
-fun update(map_new : Array<Array<String>>, block : Array<Array<String>>, xPos : Int,yPos : Int){
+fun new_age (actual_junk_map:Array<Array<String>>, block:Array<Array<String>>, xPos:Int, yPos:Int){
+    for (x in block.indices){
+        for(i in block[x].indices){
+            if (block[x][i] != ".") actual_junk_map[xPos+x][yPos+i] = block[x][i]
+        }
+    }
+    xPosition = 0
+    yPosition = 3
+    obj = Block_L()
+}
+
+fun collision (actual_junk_map:Array<Array<String>>, block:Array<Array<String>>, xPos:Int, yPos:Int) : Boolean{
+    if (xPos + obj.height >=  20) return false
+    if (yPos <= 0 || yPos + obj.width >= 10) return false
+    for (x in block.indices){
+        for(i in block[x].indices){
+            if (block[x][i] != ".")
+                if (actual_junk_map[xPos+x+1][yPos+i] != ".") return false
+        }
+    }
+    debug(obj.width,obj.height,"test")
+    return true
+}
+
+fun update(map_new : Array<Array<String>>,map_junk : Array<Array<String>>, block : Array<Array<String>>, xPos : Int,yPos : Int){
     for (x in map_new.indices){
-        for(i in map_new[x].indices) map_new[x][i] = "."
+        for(i in map_new[x].indices) {
+            map_new[x][i] = "."
+            map_new[x][i] = map_junk[x][i]
+        }
     }
     for (x in block.indices){
         for(i in block[x].indices){
@@ -34,4 +66,9 @@ fun update(map_new : Array<Array<String>>, block : Array<Array<String>>, xPos : 
         for (cell in row) print(cell)
         println()
     }
+}
+
+
+fun debug (xPos : Int,yPos : Int, text:String){
+    println("Debug #1:$xPos #2:$yPos $text")
 }
