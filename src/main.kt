@@ -10,6 +10,26 @@ fun main (){
         println("Введите команду: Space( ), Down(d), Left(l), Right(r), Stop(s)")
         if (!(xPosition + obj.height >=  20)) move(readLine().toString().uppercase())
         else new_age(mapJunk,obj.blockUI,xPosition,yPosition)
+        junkCheck(mapJunk)
+    }
+}
+fun junkCheck (actual_junk_map:Array<Array<String>>){
+    var totalJunkOnLine = 0
+    for (x in actual_junk_map.indices){
+        for (i in actual_junk_map[x].indices){
+            if (actual_junk_map[x][i] == "#") totalJunkOnLine +=1
+            if (totalJunkOnLine >= 10) junkClear(actual_junk_map,x)
+        }
+        println("Мусора в $x : $totalJunkOnLine")
+        totalJunkOnLine = 0
+    }
+}
+
+fun junkClear (actual_junk_map:Array<Array<String>>, line : Int){
+    for (x in line downTo 1){
+        for (i in actual_junk_map[x].indices){
+            actual_junk_map[x][i] = actual_junk_map[x-1][i]
+        }
     }
 }
 
@@ -91,7 +111,6 @@ fun update(map_new : Array<Array<String>>,map_junk : Array<Array<String>>, block
         println()
     }
 }
-
 
 fun debug (xPos : Int,yPos : Int, text:String){
     println("Debug #1:$xPos #2:$yPos $text")
