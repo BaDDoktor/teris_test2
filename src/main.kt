@@ -7,23 +7,48 @@ var obj = Block_L()
 fun main (){
     while(true){
         update(mapWithFigura,mapJunk,obj.blockUI,xPosition,yPosition)
-        if (collision(mapJunk,obj.blockUI,xPosition,yPosition)) {
-            println("Введите команду: Space, Down, Left, Right, Stop")
-            when (readLine().toString().uppercase()) {
-                "SPACE", " " -> obj.reverse()
-                "DOWN", "D" -> xPosition += 1
-                "LEFT", "L" ->  yPosition -= 1
-                "RIGHT", "R" -> yPosition += 1
-                "STOP", "S" -> break
-            }
-        }
+        println("Введите команду: Space( ), Down(d), Left(l), Right(r), Stop(s)")
+        if (!(xPosition + obj.height >=  20)) move(readLine().toString().uppercase())
         else new_age(mapJunk,obj.blockUI,xPosition,yPosition)
     }
 }
 
+fun move (enter:String){
+        when (enter) {
+            "SPACE", " " -> {
+                obj.reverse()
+            }
+            "DOWN", "D" -> if (!collision(mapJunk,obj.blockUI,xPosition,yPosition)) new_age(mapJunk,obj.blockUI,xPosition,yPosition)
+            "LEFT", "L" ->  {
+                if(inTheWall(obj.blockUI,yPosition,"L")){
+                    if (collision(mapJunk,obj.blockUI,xPosition,yPosition)){
+                        yPosition-=1
+                    }
+                    else new_age(mapJunk,obj.blockUI,xPosition,yPosition)
+                }
+            }
+            "RIGHT", "R" -> {
+                if(inTheWall(obj.blockUI,yPosition,"R")) {
+                    if (collision(mapJunk,obj.blockUI,xPosition,yPosition)){
+                        yPosition+=1
+                    }
+                    else new_age(mapJunk,obj.blockUI,xPosition,yPosition)
+                }
+            }
+        }
+    xPosition+=1
+}
 
-fun move (){
-
+fun inTheWall (block:Array<Array<String>>,yPos: Int, side: String) : Boolean{
+    for (x in block.indices){
+        for (i in block[x].indices){
+            if (block[x][i] != "."){
+                if (side == "L") if (yPos + i <= 0) return false
+                if (side == "R") if (yPos + i >= 9) return false
+            }
+        }
+    }
+    return true
 }
 
 fun new_age (actual_junk_map:Array<Array<String>>, block:Array<Array<String>>, xPos:Int, yPos:Int){
@@ -39,7 +64,6 @@ fun new_age (actual_junk_map:Array<Array<String>>, block:Array<Array<String>>, x
 
 fun collision (actual_junk_map:Array<Array<String>>, block:Array<Array<String>>, xPos:Int, yPos:Int) : Boolean{
     if (xPos + obj.height >=  20) return false
-    if (yPos <= 0 || yPos + obj.width >= 10) return false
     for (x in block.indices){
         for(i in block[x].indices){
             if (block[x][i] != ".")

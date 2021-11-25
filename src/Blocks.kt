@@ -4,21 +4,19 @@ open class Blocks(){
         get() {
             var z = 0
             for (x in blockUI.indices){
-                for(i in blockUI[x].indices){
-                    if (blockUI[x][i] != ".") z = x + 1
-                }
+                for(i in blockUI[x].indices) if (blockUI[x][i] != ".") z = x + 1
             }
             return z
         }
     var width = 0
         get() {
-            var z = 0
+            var y = 0
             for (x in blockUI.indices){
-                for(i in blockUI[x].indices){
-                    if (blockUI[x][i] != ".")  z = i + 1
-                }
+                var z = 0
+                for(i in blockUI[x].indices) if (blockUI[x][i] != ".") z += 1
+                if (z >= y) y = z
             }
-            return z
+            return y
         }
 
 }
