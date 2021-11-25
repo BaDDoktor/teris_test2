@@ -45,9 +45,9 @@ class Block_L : Blocks() {
             pose = 3
         }
         else if (pose == 3) {
-            blockUI[0] = arrayOf("#", ".", ".", ".")
+            blockUI[0] = arrayOf(".", ".", ".", ".")
             blockUI[1] = arrayOf("#", "#", "#", "#")
-            blockUI[2] = arrayOf(".", ".", ".", ".")
+            blockUI[2] = arrayOf("#", ".", ".", ".")
             blockUI[3] = arrayOf(".", ".", ".", ".")
             pose = 4
         }

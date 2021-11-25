@@ -1,4 +1,4 @@
-var mapWithFigura = Array(20,{Array(10,{"."}) })
+var mapWithObject = Array(20,{Array(10,{"."}) })
 var mapJunk = Array(20,{Array(10,{"."}) })
 var xPosition = 0
 var yPosition = 3
@@ -6,10 +6,12 @@ var obj = Block_L()
 
 fun main (){
     while(true){
-        update(mapWithFigura,mapJunk,obj.blockUI,xPosition,yPosition)
+        println("_____________________________________________________________")
+        update(mapWithObject,mapJunk,obj.blockUI,xPosition,yPosition)
+        println("_____________________________________________________________")
         println("Введите команду: Space( ), Down(d), Left(l), Right(r), Stop(s)")
         if (!(xPosition + obj.height >=  20)) move(readLine().toString().uppercase())
-        else new_age(mapJunk,obj.blockUI,xPosition,yPosition)
+        else newAge(mapJunk,obj.blockUI,xPosition,yPosition)
         junkCheck(mapJunk)
     }
 }
@@ -20,7 +22,6 @@ fun junkCheck (actual_junk_map:Array<Array<String>>){
             if (actual_junk_map[x][i] == "#") totalJunkOnLine +=1
             if (totalJunkOnLine >= 10) junkClear(actual_junk_map,x)
         }
-        println("Мусора в $x : $totalJunkOnLine")
         totalJunkOnLine = 0
     }
 }
@@ -38,13 +39,13 @@ fun move (enter:String){
             "SPACE", " " -> {
                 obj.reverse()
             }
-            "DOWN", "D" -> if (!collision(mapJunk,obj.blockUI,xPosition,yPosition)) new_age(mapJunk,obj.blockUI,xPosition,yPosition)
+            "DOWN", "D" -> if (!collision(mapJunk,obj.blockUI,xPosition,yPosition)) newAge(mapJunk,obj.blockUI,xPosition,yPosition)
             "LEFT", "L" ->  {
                 if(inTheWall(obj.blockUI,yPosition,"L")){
                     if (collision(mapJunk,obj.blockUI,xPosition,yPosition)){
                         yPosition-=1
                     }
-                    else new_age(mapJunk,obj.blockUI,xPosition,yPosition)
+                    else newAge(mapJunk,obj.blockUI,xPosition,yPosition)
                 }
             }
             "RIGHT", "R" -> {
@@ -52,7 +53,7 @@ fun move (enter:String){
                     if (collision(mapJunk,obj.blockUI,xPosition,yPosition)){
                         yPosition+=1
                     }
-                    else new_age(mapJunk,obj.blockUI,xPosition,yPosition)
+                    else newAge(mapJunk,obj.blockUI,xPosition,yPosition)
                 }
             }
         }
@@ -71,7 +72,7 @@ fun inTheWall (block:Array<Array<String>>,yPos: Int, side: String) : Boolean{
     return true
 }
 
-fun new_age (actual_junk_map:Array<Array<String>>, block:Array<Array<String>>, xPos:Int, yPos:Int){
+fun newAge (actual_junk_map:Array<Array<String>>, block:Array<Array<String>>, xPos:Int, yPos:Int){
     for (x in block.indices){
         for(i in block[x].indices){
             if (block[x][i] != ".") actual_junk_map[xPos+x][yPos+i] = block[x][i]
@@ -90,7 +91,6 @@ fun collision (actual_junk_map:Array<Array<String>>, block:Array<Array<String>>,
                 if (actual_junk_map[xPos+x+1][yPos+i] != ".") return false
         }
     }
-    debug(obj.width,obj.height,"test")
     return true
 }
 
@@ -110,8 +110,4 @@ fun update(map_new : Array<Array<String>>,map_junk : Array<Array<String>>, block
         for (cell in row) print(cell)
         println()
     }
-}
-
-fun debug (xPos : Int,yPos : Int, text:String){
-    println("Debug #1:$xPos #2:$yPos $text")
 }
